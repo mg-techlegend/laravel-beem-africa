@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton;
+namespace TechLegend\LaravelBeemAfrica;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use VendorName\Skeleton\Commands\SkeletonCommand;
+use TechLegend\LaravelBeemAfrica\Commands\LaravelBeemAfricaCommand;
 
-class SkeletonServiceProvider extends PackageServiceProvider
+class LaravelBeemAfricaServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -16,10 +16,10 @@ class SkeletonServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('skeleton')
+            ->name('laravel-beem-africa')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_migration_table_name_table')
-            ->hasCommand(SkeletonCommand::class);
+            ->hasMigration('create_laravel_beem_africa_table')
+            ->hasCommand(LaravelBeemAfricaCommand::class);
     }
 }

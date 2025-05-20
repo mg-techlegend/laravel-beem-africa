@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace TechLegend\LaravelBeemAfrica\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class LaravelBeemAfricaCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-beem-africa';
 
     public $description = 'My command';
 
