@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0 - 2025-05-21
+
+### Fix a bug
+
+- Updated the name of the service provider
+
 ## 1.0.1 - 2025-05-21
 
 ### Update ReadMe and Funding
