@@ -2,36 +2,24 @@
 
 namespace TechLegend\LaravelBeemAfrica\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use TechLegend\LaravelBeemAfrica\LaravelBeemAfricaServiceProvider;
+use TechLegend\LaravelBeemAfrica\BeemServiceProvider;
 
 class TestCase extends Orchestra
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'TechLegend\\LaravelBeemAfrica\\Database\\Factories\\'.class_basename($modelName).'Factory'
-        );
-    }
-
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
-            LaravelBeemAfricaServiceProvider::class,
+            BeemServiceProvider::class,
         ];
     }
 
-    public function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp($app): void
     {
-        config()->set('database.default', 'testing');
-
-        /*
-         foreach (\Illuminate\Support\Facades\File::allFiles(__DIR__ . '/database/migrations') as $migration) {
-            (include $migration->getRealPath())->up();
-         }
-         */
+        $app['config']->set('beem', [
+            'api_key' => 'test_api_key',
+            'secret_key' => 'test_secret_key',
+            'sender_name' => 'TestSender',
+        ]);
     }
 }

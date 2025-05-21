@@ -30,8 +30,7 @@
     },
     "autoload": {
         "psr-4": {
-            "TechLegend\\LaravelBeemAfrica\\": "src/",
-            "TechLegend\\LaravelBeemAfrica\\Database\\Factories\\": "database/factories/"
+            "TechLegend\\LaravelBeemAfrica\\": "src/"
         }
     },
     "autoload-dev": {
@@ -59,10 +58,7 @@
         "laravel": {
             "providers": [
                 "TechLegend\\LaravelBeemAfrica\\LaravelBeemAfricaServiceProvider"
-            ],
-            "aliases": {
-                "LaravelBeemAfrica": "TechLegend\\LaravelBeemAfrica\\Facades\\LaravelBeemAfrica"
-            }
+            ]
         }
     },
     "minimum-stability": "dev",
