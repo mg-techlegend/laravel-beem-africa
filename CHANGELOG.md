@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.1 - 2025-05-21
+
+### Update ReadMe and Funding
+
+- Update funding
+- Update read me
+
 ## 1.0.0 - 2025-05-21
 
 ### [1.0.0] - 2025-05-21
