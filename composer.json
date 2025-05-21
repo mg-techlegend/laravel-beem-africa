@@ -58,7 +58,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "TechLegend\\LaravelBeemAfrica\\LaravelBeemAfricaServiceProvider"
+                "TechLegend\\LaravelBeemAfrica\\BeemServiceProvider"
             ]
         }
     },
