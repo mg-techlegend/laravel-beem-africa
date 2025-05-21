@@ -3,7 +3,8 @@
     "description": "A Laravel package to send SMS using Beem Africa via Laravel notifications",
     "keywords": [
         "TechLegend",
-        "laravel",
+        "Laravel",
+        "Beem Africa",
         "laravel-beem-africa"
     ],
     "homepage": "https://github.com/mg-techlegend/laravel-beem-africa",
