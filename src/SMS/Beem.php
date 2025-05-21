@@ -8,8 +8,11 @@ use GuzzleHttp\Exception\GuzzleException;
 class Beem
 {
     protected string $apiKey;
+
     protected string $secretKey;
+
     protected string $senderName;
+
     protected string $smsApiUrl = 'https://apisms.beem.africa/v1/send';
 
     public function __construct(array $config)
@@ -21,7 +24,7 @@ class Beem
 
     public function sendMessage(BeemMessage $message, array $recipients): string
     {
-        $client = new Client();
+        $client = new Client;
 
         try {
             $response = $client->post($this->smsApiUrl, [

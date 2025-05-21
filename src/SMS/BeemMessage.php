@@ -5,8 +5,11 @@ namespace TechLegend\LaravelBeemAfrica\SMS;
 class BeemMessage
 {
     public string $content = '';
+
     public string $sender = '';
+
     public string $apiKey = '';
+
     public string $secretKey = '';
 
     /**
@@ -25,24 +28,28 @@ class BeemMessage
     public function content(string $content): self
     {
         $this->content = $content;
+
         return $this;
     }
 
     public function sender(string $sender): self
     {
         $this->sender = $sender;
+
         return $this;
     }
 
     public function apiKey(string $apiKey): self
     {
         $this->apiKey = $apiKey;
+
         return $this;
     }
 
     public function secretKey(string $secretKey): self
     {
         $this->secretKey = $secretKey;
+
         return $this;
     }
 }

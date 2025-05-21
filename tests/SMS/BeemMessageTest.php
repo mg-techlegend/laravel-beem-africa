@@ -10,7 +10,7 @@ it('can set content and sender fluently', function () {
 });
 
 it('can update content and sender after construction', function () {
-    $message = new BeemMessage();
+    $message = new BeemMessage;
     $message->content('Updated')->sender('UpdatedSender');
 
     expect($message->content)->toBe('Updated')
