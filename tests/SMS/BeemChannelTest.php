@@ -1,9 +1,9 @@
 <?php
 
+use Illuminate\Notifications\Notification;
 use TechLegend\LaravelBeemAfrica\SMS\Beem;
 use TechLegend\LaravelBeemAfrica\SMS\BeemChannel;
 use TechLegend\LaravelBeemAfrica\SMS\BeemMessage;
-use Illuminate\Notifications\Notification;
 
 beforeEach(function () {
     // Create a mock of the Beem API client
@@ -14,15 +14,18 @@ beforeEach(function () {
 it('sends a message using the Beem client', function () {
     $message = BeemMessage::create('Hello')->sender('TechLegend');
 
-    $notifiable = new class {
+    $notifiable = new class
+    {
         public function routeNotificationFor($channel)
         {
             return ['255713071267', '255789988188'];
         }
     };
 
-    $notification = new class($message) extends Notification {
+    $notification = new class($message) extends Notification
+    {
         private BeemMessage $message;
+
         public function __construct($message)
         {
             $this->message = $message;
@@ -52,7 +55,8 @@ it('sends a message using the Beem client', function () {
 });
 
 it('returns an empty array if no recipients found', function () {
-    $notifiable = new class {
+    $notifiable = new class
+    {
         public function routeNotificationFor($channel)
         {
             return [];

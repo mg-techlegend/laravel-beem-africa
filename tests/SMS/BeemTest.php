@@ -9,7 +9,7 @@ it('can send a message successfully (mocked)', function () {
 
     $message = BeemMessage::create('Test SMS')->sender('TestSender');
     $recipients = [
-        ['recipient_id' => 0, 'dest_addr' => '255713071267']
+        ['recipient_id' => 0, 'dest_addr' => '255713071267'],
     ];
 
     $response = $mock->sendMessage($message, $recipients);
