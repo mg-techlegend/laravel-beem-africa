@@ -35,8 +35,8 @@ class Beem
                     'Accept' => 'application/json',
                 ],
                 'json' => [
-                    'source_addr' => $message->getSender() ?: $this->senderName,
-                    'message' => $message->getContent(),
+                    'source_addr' => $message->sender ?: $this->senderName,
+                    'message' => $message->content,
                     'encoding' => 0,
                     'recipients' => $recipients,
                 ],
