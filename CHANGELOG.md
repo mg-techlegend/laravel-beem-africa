@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.1 - 2025-05-24
+
+### Bug Fix
+
+- Fix import error on BeemServiceProvider
+
 ## 1.1.0 - 2025-05-21
 
 ### Fix a bug
