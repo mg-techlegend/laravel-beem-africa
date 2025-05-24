@@ -2,11 +2,11 @@
 
 namespace TechLegend\LaravelBeemAfrica;
 
-use Spatie\LaravelPackageTools\Package;
-use TechLegend\LaravelBeemAfrica\SMS\Beem;
 use Illuminate\Support\Facades\Notification;
-use TechLegend\LaravelBeemAfrica\SMS\BeemChannel;
+use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use TechLegend\LaravelBeemAfrica\SMS\Beem;
+use TechLegend\LaravelBeemAfrica\SMS\BeemChannel;
 
 class BeemServiceProvider extends PackageServiceProvider
 {
