@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.2 - 2025-05-24
+
+### Bug Fix
+
+- Change Beem Class from getters to public methods
+
 ## 1.1.1 - 2025-05-24
 
 ### Bug Fix
