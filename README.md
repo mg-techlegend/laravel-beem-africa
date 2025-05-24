@@ -75,12 +75,12 @@ class SendSmsNotification extends Notification
 
 ### Use in your model:
 
-Make sure your `Notifiable` model has a `routeNotificationForBeem()` method that returns the recipient’s phone number.
+Make sure your `Notifiable` model has a `routeNotificationForBeem()` method that returns the recipient’s phone number in array.
 
 ```php
-public function routeNotificationForBeem(): string
+public function routeNotificationForBeem(): array
 {
-    return $this->phone_number;
+    return array($this->phone_number);
 }
 ```
 
