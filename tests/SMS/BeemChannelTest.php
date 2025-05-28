@@ -13,20 +13,25 @@ beforeEach(function () {
 it('sends a message and returns Beem response array', function () {
     $message = BeemMessage::create('Hello World')->sender('TestSender');
 
-    $notifiable = new class {
-        public function routeNotificationFor($channel) {
+    $notifiable = new class
+    {
+        public function routeNotificationFor($channel)
+        {
             return ['255700000001', '255700000002'];
         }
     };
 
-    $notification = new class($message) extends Notification {
+    $notification = new class($message) extends Notification
+    {
         private $message;
 
-        public function __construct($message) {
+        public function __construct($message)
+        {
             $this->message = $message;
         }
 
-        public function toBeem($notifiable) {
+        public function toBeem($notifiable)
+        {
             return $this->message;
         }
     };

@@ -1,8 +1,8 @@
 <?php
 
+use GuzzleHttp\Psr7\Response;
 use TechLegend\LaravelBeemAfrica\SMS\Beem;
 use TechLegend\LaravelBeemAfrica\SMS\BeemMessage;
-use GuzzleHttp\Psr7\Response;
 
 it('returns a structured array when sending a message', function () {
     $config = [
