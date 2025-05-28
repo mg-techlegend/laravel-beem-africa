@@ -3,8 +3,8 @@
 namespace TechLegend\LaravelBeemAfrica\SMS;
 
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Facades\Log;
 
 class Beem
 {
