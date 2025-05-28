@@ -1,41 +1,45 @@
 <?php
 
+use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\RequestInterface;
+use GuzzleHttp\Exception\RequestException;
 use TechLegend\LaravelBeemAfrica\SMS\Beem;
 use TechLegend\LaravelBeemAfrica\SMS\BeemMessage;
 
-it('returns a structured array when sending a message', function () {
+it('sends message successfully', function () {
+    $mockClient = Mockery::mock(Client::class);
+    $responseBody = json_encode([
+        'successful' => true,
+        'request_id' => 123,
+        'message' => 'Message Submitted Successfully',
+        'valid' => 2,
+        'invalid' => 0,
+        'duplicates' => 0,
+    ]);
+    $mockResponse = new Response(200, [], $responseBody);
+
+    $mockClient->shouldReceive('post')
+        ->once()
+        ->andReturn($mockResponse);
+
     $config = [
-        'api_key' => 'fake_key',
+        'api_key' => 'fake_api_key',
         'secret_key' => 'fake_secret',
         'sender_name' => 'TestSender',
     ];
 
-    $mockedResponse = [
-        'successful' => true,
-        'request_id' => 123456,
-        'message' => 'Message Submitted Successfully',
-        'valid' => 1,
-        'invalid' => 0,
-        'duplicates' => 0,
-    ];
+    $beem = new Beem($config, $mockClient);
 
-    // Mock Guzzle Client
-    Mockery::mock('overload:GuzzleHttp\Client')
-        ->shouldReceive('post')
-        ->once()
-        ->andReturn(new Response(200, [], json_encode($mockedResponse)));
+    $message = BeemMessage::create('Test message')->sender('TestSender');
 
-    $beem = new Beem($config);
-
-    $message = BeemMessage::create('Test message');
     $recipients = [
         ['recipient_id' => 0, 'dest_addr' => '255700000001'],
+        ['recipient_id' => 1, 'dest_addr' => '255700000002'],
     ];
 
     $result = $beem->sendMessage($message, $recipients);
 
-    expect($result)->toBeArray();
     expect($result['successful'])->toBeTrue();
     expect($result['message'])->toBe('Message Submitted Successfully');
     expect($result['status_code'])->toBe(200);

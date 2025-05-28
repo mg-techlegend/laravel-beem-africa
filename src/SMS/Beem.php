@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Log;
 
 class Beem
 {
+    protected Client $client;
+
     protected string $apiKey;
 
     protected string $secretKey;
@@ -16,17 +18,17 @@ class Beem
 
     protected string $smsApiUrl = 'https://apisms.beem.africa/v1/send';
 
-    public function __construct(array $config)
+    public function __construct(array $config, ?Client $client = null)
     {
         $this->apiKey = $config['api_key'];
         $this->secretKey = $config['secret_key'];
         $this->senderName = $config['sender_name'] ?? 'INFO';
+
+        $this->client = $client ?? new Client();
     }
 
     public function sendMessage(BeemMessage $message, array $recipients): array
     {
-        $client = new Client;
-
         $payload = [
             'source_addr' => $message->sender ?: $this->senderName,
             'encoding' => 0,
@@ -35,7 +37,7 @@ class Beem
         ];
 
         try {
-            $response = $client->post($this->smsApiUrl, [
+            $response = $this->client->post($this->smsApiUrl, [
                 'verify' => false,
                 'headers' => [
                     'Authorization' => 'Basic '.base64_encode($this->apiKey.':'.$this->secretKey),
