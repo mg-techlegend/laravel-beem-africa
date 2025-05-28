@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.0 - 2025-05-28
+
+### Major Update
+
+- Send now returns response from Beem
+- Response in Array
+- Better implementation of Guzzle Client
+- Updated test and mockery
+
 ## 1.1.2 - 2025-05-24
 
 ### Bug Fix
