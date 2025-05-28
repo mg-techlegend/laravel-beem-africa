@@ -13,9 +13,9 @@ class BeemChannel
         $this->beem = $beem;
     }
 
-    public function send($notifiable, Notification $notification): string
+    public function send($notifiable, Notification $notification): array
     {
-        $message = $notification->toBeem($notifiable); // @phpstan-ignore-line
+        $message = $notification->toBeem($notifiable);
         $recipients = $this->getRecipients($notifiable);
 
         return $this->beem->sendMessage($message, $recipients);
