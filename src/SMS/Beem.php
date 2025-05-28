@@ -37,7 +37,7 @@ class Beem
             $response = $client->post($this->smsApiUrl, [
                 'verify' => false,
                 'headers' => [
-                    'Authorization' => 'Basic ' . base64_encode($this->apiKey . ':' . $this->secretKey),
+                    'Authorization' => 'Basic '.base64_encode($this->apiKey.':'.$this->secretKey),
                     'Content-Type' => 'application/json',
                     'Accept' => 'application/json',
                 ],
@@ -48,35 +48,35 @@ class Beem
             $data = json_decode($responseBody, true);
 
             return [
-                'successful'   => $data['successful'] ?? false,
-                'request_id'   => $data['request_id'] ?? null,
-                'message'      => $data['message'] ?? 'No message returned from Beem.',
-                'valid'        => $data['valid'] ?? 0,
-                'invalid'      => $data['invalid'] ?? 0,
-                'duplicates'   => $data['duplicates'] ?? 0,
-                'status_code'  => $response->getStatusCode(),
+                'successful' => $data['successful'] ?? false,
+                'request_id' => $data['request_id'] ?? null,
+                'message' => $data['message'] ?? 'No message returned from Beem.',
+                'valid' => $data['valid'] ?? 0,
+                'invalid' => $data['invalid'] ?? 0,
+                'duplicates' => $data['duplicates'] ?? 0,
+                'status_code' => $response->getStatusCode(),
                 'raw_response' => $data,
             ];
         } catch (GuzzleException $e) {
             // Log the error with full trace for debugging
             Log::error('Beem SMS Request Failed', [
                 'message' => $e->getMessage(),
-                'code'    => $e->getCode(),
-                'trace'   => $e->getTraceAsString(),
+                'code' => $e->getCode(),
+                'trace' => $e->getTraceAsString(),
                 'payload' => $payload,
             ]);
 
             return [
-                'successful'   => false,
-                'request_id'   => null,
-                'message'      => 'Beem SMS request failed: ' . $e->getMessage(),
-                'valid'        => 0,
-                'invalid'      => 0,
-                'duplicates'   => 0,
-                'status_code'  => $e->getCode() ?: 500,
-                'exception'    => [
+                'successful' => false,
+                'request_id' => null,
+                'message' => 'Beem SMS request failed: '.$e->getMessage(),
+                'valid' => 0,
+                'invalid' => 0,
+                'duplicates' => 0,
+                'status_code' => $e->getCode() ?: 500,
+                'exception' => [
                     'message' => $e->getMessage(),
-                    'trace'   => $e->getTraceAsString(),
+                    'trace' => $e->getTraceAsString(),
                 ],
             ];
         }
