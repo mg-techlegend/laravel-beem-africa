@@ -24,7 +24,7 @@ class Beem
         $this->secretKey = $config['secret_key'];
         $this->senderName = $config['sender_name'] ?? 'INFO';
 
-        $this->client = $client ?? new Client();
+        $this->client = $client ?? new Client;
     }
 
     public function sendMessage(BeemMessage $message, array $recipients): array

@@ -2,8 +2,6 @@
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
-use Psr\Http\Message\RequestInterface;
-use GuzzleHttp\Exception\RequestException;
 use TechLegend\LaravelBeemAfrica\SMS\Beem;
 use TechLegend\LaravelBeemAfrica\SMS\BeemMessage;
 
