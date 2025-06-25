@@ -39,7 +39,7 @@ class Beem
         try {
             $response = $this->client->post($this->smsApiUrl, [
                 'headers' => [
-                    'Authorization' => 'Basic ' . base64_encode("{$this->apiKey}:{$this->secretKey}"),
+                    'Authorization' => 'Basic '.base64_encode("{$this->apiKey}:{$this->secretKey}"),
                     'Content-Type' => 'application/json',
                     'Accept' => 'application/json',
                 ],
