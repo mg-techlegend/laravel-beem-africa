@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.1 - 2025-06-25
+
+* Improve security, require ssl verify now
+
 ## 1.2.0 - 2025-05-28
 
 ### Major Update
