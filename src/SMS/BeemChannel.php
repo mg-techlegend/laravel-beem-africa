@@ -16,6 +16,7 @@ class BeemChannel
     public function send($notifiable, Notification $notification): array
     {
         $message = $notification->toBeem($notifiable);
+
         $recipients = $this->getRecipients($notifiable);
 
         return $this->beem->sendMessage($message, $recipients);

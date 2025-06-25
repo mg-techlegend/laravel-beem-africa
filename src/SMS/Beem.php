@@ -38,9 +38,8 @@ class Beem
 
         try {
             $response = $this->client->post($this->smsApiUrl, [
-                'verify' => false,
                 'headers' => [
-                    'Authorization' => 'Basic '.base64_encode($this->apiKey.':'.$this->secretKey),
+                    'Authorization' => 'Basic ' . base64_encode("{$this->apiKey}:{$this->secretKey}"),
                     'Content-Type' => 'application/json',
                     'Accept' => 'application/json',
                 ],
@@ -61,7 +60,6 @@ class Beem
                 'raw_response' => $data,
             ];
         } catch (GuzzleException $e) {
-            // Log the error with full trace for debugging
             Log::error('Beem SMS Request Failed', [
                 'message' => $e->getMessage(),
                 'code' => $e->getCode(),
