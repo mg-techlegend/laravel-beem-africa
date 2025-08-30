@@ -5,12 +5,10 @@ namespace TechLegend\LaravelBeemAfrica\SMS;
 class BeemMessage
 {
     public string $content = '';
-
     public string $sender = '';
-
     public string $apiKey = '';
-
     public string $secretKey = '';
+    public int $encoding = 0; // 0 for GSM7, 1 for UCS2
 
     /**
      * Static constructor for fluent chaining.
@@ -35,6 +33,13 @@ class BeemMessage
     public function sender(string $sender): self
     {
         $this->sender = $sender;
+
+        return $this;
+    }
+
+    public function encoding(int $encoding): self
+    {
+        $this->encoding = $encoding;
 
         return $this;
     }
