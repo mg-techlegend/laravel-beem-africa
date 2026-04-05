@@ -1,6 +1,6 @@
 {
     "name": "mg-techlegend/laravel-beem-africa",
-    "description": "A comprehensive Laravel package to integrate with Beem Africa's API services including SMS, OTP, Airtime, USSD, Voice, and Insights",
+    "description": "A comprehensive Laravel package for integrating with Beem Africa's API services including SMS, OTP, Airtime, USSD, Voice, and Insights. Provides a clean, expressive interface with Laravel Notifications support, typed responses, and robust error handling.",
     "keywords": [
         "TechLegend",
         "Laravel",
@@ -21,20 +21,31 @@
             "name": "Thomson Maguru",
             "email": "thomson@techlegend.co.tz",
             "role": "Developer"
+        },
+        {
+            "name": "Beem Africa",
+            "homepage": "https://beem.africa",
+            "role": "Beem Africa API"
         }
     ],
     "require": {
         "php": "^8.4",
-        "spatie/laravel-package-tools": "^1.16",
-        "illuminate/contracts": "^11.22||^12.0"
+        "illuminate/contracts": "^11.0||^12.0||^13.0",
+        "illuminate/http": "^11.0||^12.0||^13.0",
+        "illuminate/notifications": "^11.0||^12.0||^13.0",
+        "spatie/laravel-package-tools": "^1.16"
     },
     "require-dev": {
+        "larastan/larastan": "^3.0",
         "laravel/pint": "^1.14",
-        "nunomaduro/collision": "^8.1.1||^7.10.0",
-        "orchestra/testbench": "^10.0.0||^9.0.0||^8.22.0",
-        "pestphp/pest": "^3.0",
-        "pestphp/pest-plugin-arch": "^3.0",
-        "pestphp/pest-plugin-laravel": "^3.0"
+        "nunomaduro/collision": "^8.8",
+        "orchestra/testbench": "^9.0.0||^10.0.0||^11.0.0",
+        "pestphp/pest": "^4.0",
+        "pestphp/pest-plugin-arch": "^4.0",
+        "pestphp/pest-plugin-laravel": "^4.0",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0"
     },
     "autoload": {
         "psr-4": {
@@ -50,7 +61,7 @@
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
-        "analyse": "vendor/bin/phpstan analyse",
+        "analyse": "vendor/bin/phpstan analyse --memory-limit=512M",
         "test": "vendor/bin/pest",
         "test-coverage": "vendor/bin/pest --coverage",
         "format": "vendor/bin/pint"
@@ -65,10 +76,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "TechLegend\\LaravelBeemAfrica\\BeemServiceProvider"
+                "TechLegend\\LaravelBeemAfrica\\LaravelBeemAfricaServiceProvider"
             ],
             "aliases": {
-                "Beem": "TechLegend\\LaravelBeemAfrica\\BeemFacade"
+                "BeemAfrica": "TechLegend\\LaravelBeemAfrica\\Facades\\LaravelBeemAfrica"
             }
         }
     },

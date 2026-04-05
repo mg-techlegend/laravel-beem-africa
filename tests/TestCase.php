@@ -3,23 +3,19 @@
 namespace TechLegend\LaravelBeemAfrica\Tests;
 
 use Orchestra\Testbench\TestCase as Orchestra;
-use TechLegend\LaravelBeemAfrica\BeemServiceProvider;
+use TechLegend\LaravelBeemAfrica\LaravelBeemAfricaServiceProvider;
 
 class TestCase extends Orchestra
 {
     protected function getPackageProviders($app): array
     {
         return [
-            BeemServiceProvider::class,
+            LaravelBeemAfricaServiceProvider::class,
         ];
     }
 
-    protected function getEnvironmentSetUp($app): void
+    public function getEnvironmentSetUp($app): void
     {
-        $app['config']->set('beem', [
-            'api_key' => 'test_api_key',
-            'secret_key' => 'test_secret_key',
-            'sender_name' => 'TestSender',
-        ]);
+        config()->set('database.default', 'testing');
     }
 }

@@ -2,449 +2,290 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/mg-techlegend/laravel-beem-africa.svg?style=flat-square)](https://packagist.org/packages/mg-techlegend/laravel-beem-africa)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/mg-techlegend/laravel-beem-africa/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/mg-techlegend/laravel-beem-africa/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/mg-techlegend/laravel-beem-africa/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/mg-techlegend/laravel-beem-africa/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/mg-techlegend/laravel-beem-africa.svg?style=flat-square)](https://packagist.org/packages/mg-techlegend/laravel-beem-africa)
 
-**A comprehensive Laravel package to integrate with Beem Africa's API services.**
+A comprehensive Laravel package for integrating with [Beem Africa's](https://beem.africa) API services. Provides a clean, expressive interface for SMS, OTP, Airtime, USSD, Voice, and Insights with Laravel Notifications support, typed responses, and robust error handling.
 
-This package provides a simple, elegant way to use [Beem Africa](https://beem.africa)'s API services in your Laravel applications. It integrates seamlessly with Laravel's native notification system and provides easy access to all Beem services including SMS, OTP, Airtime, USSD, Voice, and Insights.
+## Features
 
----
+- **SMS** - Single and bulk messaging with fluent message builder
+- **OTP** - Generate, verify, and resend one-time passwords
+- **Airtime** - Send airtime, check balance, transaction history
+- **USSD** - Create, update, list, and delete USSD menus
+- **Voice** - Make calls, check status, list available voices
+- **Insights** - Delivery reports, message statistics, account balance
+- **Webhooks** - Handle delivery reports with HMAC signature verification
+- **Laravel Notifications** - Native notification channel integration
+- **Typed Responses** - Readonly DTOs for all API responses
+- **Error Handling** - Specific exceptions for auth, validation, and request errors
+- **Phone Normalization** - Automatic formatting with optional country code prefixing
+- **HTTP Retries** - Configurable retry logic for resilient requests
 
-## 📦 Installation
-
-You can install the package via Composer:
+## Installation
 
 ```bash
 composer require mg-techlegend/laravel-beem-africa
 ```
 
-Then, publish the config file:
+Publish the configuration file:
 
 ```bash
 php artisan vendor:publish --tag="laravel-beem-africa-config"
 ```
 
-Update your `.env` file with your Beem credentials:
+## Configuration
+
+Add these to your `.env` file:
 
 ```env
 BEEM_API_KEY=your-api-key
-BEEM_SECRET_KEY=your-secret
-BEEM_SENDER_NAME=your-sender-name
+BEEM_SECRET_KEY=your-secret-key
+BEEM_SENDER_NAME=YourApp
 
-# Optional: Custom endpoints (if needed)
-BEEM_SMS_ENDPOINT=https://apisms.beem.africa/v1/send
-BEEM_OTP_ENDPOINT=https://apisms.beem.africa/v1/otp
-BEEM_AIRTIME_ENDPOINT=https://apisms.beem.africa/v1/airtime
-BEEM_USSD_ENDPOINT=https://apisms.beem.africa/v1/ussd
-BEEM_VOICE_ENDPOINT=https://apisms.beem.africa/v1/voice
-BEEM_INSIGHTS_ENDPOINT=https://apisms.beem.africa/v1/insights
-
-# Webhook settings (optional)
-BEEM_WEBHOOKS_ENABLED=true
-BEEM_WEBHOOK_SECRET=your-webhook-secret
-BEEM_WEBHOOK_ENDPOINT=https://your-app.com/webhooks/beem
+# Optional
+BEEM_DEFAULT_COUNTRY_CODE=255
+BEEM_TIMEOUT=30
+BEEM_HTTP_RETRY_ATTEMPTS=3
 ```
 
----
+## Usage
 
-## 🛠 Configuration
-
-The config file `config/beem.php` contains comprehensive settings:
+### Quick SMS
 
 ```php
-return [
-    'api_key' => env('BEEM_API_KEY'),
-    'secret_key' => env('BEEM_SECRET_KEY'),
-    'sender_name' => env('BEEM_SENDER_NAME', 'INFO'),
-    
-    // API Endpoints
-    'endpoints' => [
-        'sms' => env('BEEM_SMS_ENDPOINT', 'https://apisms.beem.africa/v1/send'),
-        'otp' => env('BEEM_OTP_ENDPOINT', 'https://apisms.beem.africa/v1/otp'),
-        'airtime' => env('BEEM_AIRTIME_ENDPOINT', 'https://apisms.beem.africa/v1/airtime'),
-        'ussd' => env('BEEM_USSD_ENDPOINT', 'https://apisms.beem.africa/v1/ussd'),
-        'voice' => env('BEEM_VOICE_ENDPOINT', 'https://apisms.beem.africa/v1/voice'),
-        'insights' => env('BEEM_INSIGHTS_ENDPOINT', 'https://apisms.beem.africa/v1/insights'),
-    ],
-    
-    // Default settings for different services
-    'defaults' => [
-        'sms' => [
-            'encoding' => 0, // 0 for GSM7, 1 for UCS2
-        ],
-        'otp' => [
-            'length' => 6,
-            'expiry' => 300, // 5 minutes in seconds
-            'type' => 'numeric', // numeric, alphanumeric
-        ],
-        'airtime' => [
-            'currency' => 'TZS',
-        ],
-        'voice' => [
-            'language' => 'en',
-            'voice_id' => 1,
-        ],
-    ],
-    
-    // Webhook settings
-    'webhooks' => [
-        'enabled' => env('BEEM_WEBHOOKS_ENABLED', false),
-        'secret' => env('BEEM_WEBHOOK_SECRET'),
-        'endpoint' => env('BEEM_WEBHOOK_ENDPOINT'),
-    ],
-];
+use TechLegend\LaravelBeemAfrica\Facades\LaravelBeemAfrica as BeemAfrica;
+
+// Single SMS
+$response = BeemAfrica::sendSms('255700000001', 'Hello from Beem!');
+
+// With custom sender
+$response = BeemAfrica::sendSms('255700000001', 'Hello!', 'MyApp');
+
+// Bulk SMS
+$response = BeemAfrica::sendSmsBulk(
+    ['255700000001', '255700000002'],
+    'Bulk message'
+);
 ```
 
----
-
-## 🚀 Usage
-
-### 1. SMS Service
-
-#### Using the Facade (Quick Methods)
+### Fluent Message Builder
 
 ```php
-use TechLegend\LaravelBeemAfrica\BeemFacade;
+use TechLegend\LaravelBeemAfrica\BeemAfricaMessage;
+use TechLegend\LaravelBeemAfrica\Facades\LaravelBeemAfrica as BeemAfrica;
 
-// Simple SMS send
-$result = BeemFacade::sendSms('255700000001', 'Hello from Beem!', 'MyApp');
+$message = BeemAfricaMessage::make()
+    ->to('255700000001')
+    ->content('Hello World')
+    ->sender('MyApp')
+    ->encoding(1); // UCS2 encoding
+
+$response = BeemAfrica::sendSmsMessage($message);
+
+echo $response->successful;  // true
+echo $response->requestId;   // 12345
+echo $response->valid;       // 1
 ```
 
-#### Using the SMS Service Directly
-
-```php
-use TechLegend\LaravelBeemAfrica\SMS\BeemMessage;
-
-$smsService = BeemFacade::sms();
-$message = BeemMessage::create('Your order has been shipped!')
-    ->sender('MyStore')
-    ->encoding(0); // GSM7 encoding
-
-$recipients = [
-    ['recipient_id' => 0, 'dest_addr' => '255700000001'],
-    ['recipient_id' => 1, 'dest_addr' => '255700000002'],
-];
-
-$result = $smsService->sendMessage($message, $recipients);
-```
-
-#### Laravel Notifications
-
-```php
-use Illuminate\Notifications\Notification;
-use TechLegend\LaravelBeemAfrica\SMS\BeemMessage;
-
-class OrderShippedNotification extends Notification
-{
-    public function via($notifiable): array
-    {
-        return ['beem'];
-    }
-
-    public function toBeem($notifiable): BeemMessage
-    {
-        return BeemMessage::create('Your order has been shipped!')
-            ->sender('MyStore')
-            ->encoding(0);
-    }
-}
-
-// Use in your model
-$user->notify(new OrderShippedNotification());
-```
-
-### 2. OTP Service
+### OTP Service
 
 ```php
 // Generate OTP
-$otpResult = BeemFacade::generateOtp('255700000001', [
+$response = BeemAfrica::generateOtp('255700000001', [
     'length' => 6,
-    'expiry' => 300, // 5 minutes
+    'expiry' => 300,
     'type' => 'numeric',
-    'message' => 'Your verification code is: {code}',
+    'message' => 'Your code is: {code}',
 ]);
 
-// Verify OTP
-$verifyResult = BeemFacade::verifyOtp('255700000001', '123456', $otpResult['request_id']);
+echo $response->requestId; // 'otp_123456'
 
-// Resend OTP
-$resendResult = BeemFacade::otp()->resendOtp('255700000001', $otpResult['request_id']);
+// Verify OTP
+$response = BeemAfrica::verifyOtp('255700000001', '123456');
+
+echo $response->valid; // true
+
+// Resend OTP (via service accessor)
+$response = BeemAfrica::otp()->resend('255700000001', 'otp_123456');
 ```
 
-### 3. Airtime Service
+### Airtime
 
 ```php
 // Send airtime
-$airtimeResult = BeemFacade::sendAirtime('255700000001', 1000.00, [
+$response = BeemAfrica::sendAirtime('255700000001', 1000.00, [
     'currency' => 'TZS',
-    'message' => 'Airtime sent successfully',
 ]);
 
-// Get airtime balance
-$balanceResult = BeemFacade::airtime()->getAirtimeBalance();
+echo $response->transactionId; // 'txn_123'
 
-// Get transaction history
-$historyResult = BeemFacade::airtime()->getTransactionHistory([
-    'start_date' => '2024-01-01',
-    'end_date' => '2024-12-31',
-    'phone_number' => '255700000001',
-]);
-
-// Get transaction status
-$statusResult = BeemFacade::airtime()->getTransactionStatus($airtimeResult['transaction_id']);
+// Check balance
+$balance = BeemAfrica::airtime()->getBalance();
+echo $balance->balance;   // 5000.00
+echo $balance->currency;  // 'TZS'
 ```
 
-### 4. USSD Service
+### Voice
 
 ```php
-// Create USSD menu
-$menuData = [
-    'menu_name' => 'My Service Menu',
-    'menu_items' => [
-        [
-            'id' => 1,
-            'text' => 'Check Balance',
-            'action' => 'check_balance',
-        ],
-        [
-            'id' => 2,
-            'text' => 'Send Money',
-            'action' => 'send_money',
-        ],
-    ],
-    'welcome_message' => 'Welcome to My Service',
-    'goodbye_message' => 'Thank you for using our service',
-];
-
-$menuResult = BeemFacade::ussd()->createMenu($menuData);
-
-// Get menu details
-$menuDetails = BeemFacade::ussd()->getMenu($menuResult['menu_id']);
-
-// List all menus
-$menus = BeemFacade::ussd()->listMenus(['page' => 1, 'limit' => 10]);
-
-// Update menu
-$updateResult = BeemFacade::ussd()->updateMenu($menuResult['menu_id'], [
-    'welcome_message' => 'Updated welcome message',
-]);
-
-// Delete menu
-$deleteResult = BeemFacade::ussd()->deleteMenu($menuResult['menu_id']);
-```
-
-### 5. Voice Service
-
-```php
-// Make voice call
-$callResult = BeemFacade::makeCall('255700000001', 'Hello, this is a voice message', [
+$response = BeemAfrica::makeCall('255700000001', 'Hello, this is a voice message', [
     'language' => 'en',
     'voice_id' => 1,
     'repeat_count' => 2,
 ]);
 
-// Get call status
-$callStatus = BeemFacade::voice()->getCallStatus($callResult['call_id']);
-
-// Get call history
-$callHistory = BeemFacade::voice()->getCallHistory([
-    'start_date' => '2024-01-01',
-    'end_date' => '2024-12-31',
-    'phone_number' => '255700000001',
-    'status' => 'completed',
-]);
-
-// Cancel call
-$cancelResult = BeemFacade::voice()->cancelCall($callResult['call_id']);
-
-// Get available voices
-$voices = BeemFacade::voice()->getAvailableVoices();
+echo $response->callId; // 'call_123'
 ```
 
-### 6. Insights Service
+### USSD Menus
 
 ```php
-// Get account balance
-$accountBalance = BeemFacade::getBalance();
-
-// Get message delivery report
-$deliveryReport = BeemFacade::insights()->getMessageDeliveryReport($result['request_id']);
-
-// Get message statistics
-$statistics = BeemFacade::insights()->getMessageStatistics([
-    'start_date' => '2024-01-01',
-    'end_date' => '2024-12-31',
-    'sender_name' => 'MyApp',
+$response = BeemAfrica::ussd()->createMenu([
+    'menu_name' => 'My Service',
+    'menu_items' => [...],
+    'welcome_message' => 'Welcome!',
 ]);
 
-// Get message history
-$messageHistory = BeemFacade::insights()->getMessageHistory([
-    'start_date' => '2024-01-01',
-    'end_date' => '2024-12-31',
-    'phone_number' => '255700000001',
-    'status' => 'delivered',
-    'page' => 1,
-    'limit' => 20,
-]);
-
-// Get failed messages
-$failedMessages = BeemFacade::insights()->getFailedMessages([
-    'start_date' => '2024-01-01',
-    'end_date' => '2024-12-31',
-    'error_code' => 'INVALID_NUMBER',
-]);
-
-// Get error codes
-$errorCodes = BeemFacade::insights()->getErrorCodes();
+echo $response->menuId; // 'menu_123'
 ```
 
-### 7. Webhooks
+### Insights & Reporting
 
 ```php
-// In your webhook controller
-use Illuminate\Http\Request;
+// Account balance
+$balance = BeemAfrica::getBalance();
 
-public function handleWebhook(Request $request)
+// Delivery report
+$report = BeemAfrica::insights()->getDeliveryReport('request_123');
+
+// Message statistics
+$stats = BeemAfrica::insights()->getMessageStatistics([
+    'start_date' => '2024-01-01',
+    'end_date' => '2024-01-31',
+]);
+```
+
+### Service Accessors
+
+Access individual services for advanced use:
+
+```php
+BeemAfrica::sms();       // BeemSms
+BeemAfrica::otp();       // BeemOtp
+BeemAfrica::airtime();   // BeemAirtime
+BeemAfrica::ussd();      // BeemUssd
+BeemAfrica::voice();     // BeemVoice
+BeemAfrica::insights();  // BeemInsights
+BeemAfrica::webhooks();  // BeemWebhookHandler
+```
+
+### Laravel Notifications
+
+```php
+use Illuminate\Notifications\Notification;
+use TechLegend\LaravelBeemAfrica\BeemAfricaMessage;
+use TechLegend\LaravelBeemAfrica\Channels\BeemAfricaChannel;
+
+class OrderShipped extends Notification
 {
-    $result = BeemFacade::webhooks()->handle($request);
-    
+    public function via(object $notifiable): array
+    {
+        return [BeemAfricaChannel::class];
+    }
+
+    public function toBeemAfrica(object $notifiable): BeemAfricaMessage
+    {
+        return BeemAfricaMessage::make()
+            ->content('Your order has been shipped!')
+            ->sender('MyShop');
+    }
+}
+```
+
+Add the routing method to your notifiable model:
+
+```php
+class User extends Authenticatable
+{
+    use Notifiable;
+
+    public function routeNotificationForBeemAfrica(): string
+    {
+        return $this->phone_number;
+    }
+}
+```
+
+### Dependency Injection
+
+```php
+use TechLegend\LaravelBeemAfrica\LaravelBeemAfrica;
+
+class SmsController extends Controller
+{
+    public function __construct(
+        private LaravelBeemAfrica $beem,
+    ) {}
+
+    public function send()
+    {
+        $response = $this->beem->sendSms('255700000001', 'Hello!');
+    }
+}
+```
+
+### Webhooks
+
+```php
+use TechLegend\LaravelBeemAfrica\Facades\LaravelBeemAfrica as BeemAfrica;
+
+Route::post('/webhooks/beem', function (Request $request) {
+    $result = BeemAfrica::webhooks()->handle($request);
+
     if ($result['successful']) {
+        // Process the webhook data
         $eventType = $result['event_type'];
         $data = $result['data'];
-        
-        switch ($eventType) {
-            case 'delivery_report':
-                $processed = BeemFacade::webhooks()->processDeliveryReport($data);
-                break;
-            case 'otp_verification':
-                $processed = BeemFacade::webhooks()->processOtpVerification($data);
-                break;
-            case 'airtime_transaction':
-                $processed = BeemFacade::webhooks()->processAirtimeTransaction($data);
-                break;
-        }
-        
-        return response()->json(['status' => 'success'], 200);
     }
-    
-    return response()->json(['status' => 'error'], 400);
-}
+
+    return response()->json(['status' => 'ok']);
+});
 ```
 
-### 8. Dependency Injection
+### Error Handling
 
 ```php
-use TechLegend\LaravelBeemAfrica\Beem;
+use TechLegend\LaravelBeemAfrica\Exceptions\BeemAfricaAuthenticationException;
+use TechLegend\LaravelBeemAfrica\Exceptions\BeemAfricaValidationException;
+use TechLegend\LaravelBeemAfrica\Exceptions\BeemAfricaRequestException;
 
-class NotificationController
-{
-    public function __construct(private Beem $beem)
-    {
-    }
-    
-    public function sendNotification()
-    {
-        // Send SMS
-        $smsResult = $this->beem->sendSms('255700000001', 'Hello!');
-        
-        // Generate OTP
-        $otpResult = $this->beem->generateOtp('255700000001');
-        
-        // Send airtime
-        $airtimeResult = $this->beem->sendAirtime('255700000001', 500.00);
-        
-        // Make voice call
-        $callResult = $this->beem->makeCall('255700000001', 'Important message');
-        
-        return response()->json([
-            'sms' => $smsResult,
-            'otp' => $otpResult,
-            'airtime' => $airtimeResult,
-            'call' => $callResult,
-        ]);
-    }
-}
-```
-
-### 9. Error Handling
-
-```php
 try {
-    $result = BeemFacade::sendSms('255700000001', 'Test message');
-    
-    if (!$result['successful']) {
-        // Handle error
-        Log::error('SMS sending failed', [
-            'error' => $result['message'],
-            'status_code' => $result['status_code'],
-        ]);
-        
-        // You can also check for specific error types
-        if (isset($result['error'])) {
-            // Handle specific error
-        }
-    }
-} catch (\Exception $e) {
-    Log::error('Beem service exception', [
-        'message' => $e->getMessage(),
-        'trace' => $e->getTraceAsString(),
-    ]);
+    $response = BeemAfrica::sendSms('255700000001', 'Hello!');
+} catch (BeemAfricaAuthenticationException $e) {
+    // Invalid API credentials (401/403)
+    $e->payload; // Original API response
+} catch (BeemAfricaValidationException $e) {
+    // Invalid request data (400/422)
+} catch (BeemAfricaRequestException $e) {
+    // Server error or connection issue (5xx)
 }
 ```
 
----
-
-## 📋 Available Services
-
-| Service | Description | Methods |
-|---------|-------------|---------|
-| **SMS** | Send SMS messages | `sendSms()`, `sendMessage()` |
-| **OTP** | Generate and verify OTP codes | `generateOtp()`, `verifyOtp()`, `resendOtp()` |
-| **Airtime** | Send airtime and manage transactions | `sendAirtime()`, `getAirtimeBalance()`, `getTransactionHistory()` |
-| **USSD** | Create and manage USSD menus | `createMenu()`, `getMenu()`, `updateMenu()`, `deleteMenu()` |
-| **Voice** | Make voice calls | `makeCall()`, `getCallStatus()`, `getCallHistory()` |
-| **Insights** | Analytics and reporting | `getBalance()`, `getMessageStatistics()`, `getMessageHistory()` |
-| **Webhooks** | Handle incoming webhooks | `handle()`, `processDeliveryReport()` |
-
----
-
-## ✅ Testing
+## Testing
 
 ```bash
 composer test
 ```
 
-Tests are written using [Pest](https://pestphp.com/) and run automatically via GitHub Actions on every push.
-
----
-
-## 📄 Changelog
+## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
----
+## Credits
 
-## 🤝 Contributing
+- [Thomson Maguru](https://github.com/mg-techlegend)
+- [Beem Africa](https://beem.africa)
 
-Contributions are welcome! Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+## License
 
----
-
-## 🔒 Security
-
-If you discover any security issues, please review [our security policy](../../security/policy) to report them.
-
----
-
-## 👨‍💻 Credits
-
-* [Thomson Maguru](https://github.com/tomsgad)
-* [TechLegend](https://github.com/mg-techlegend)
-* [All Contributors](../../contributors)
-
----
-
-## 📜 License
-
-The MIT License (MIT). Please see the [LICENSE](LICENSE.md) file for more information.
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
